@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <div>
+            <h1 style="text-align:center;color:rgba(0, 0, 0);font-family:Arial;font-size:200%">
+                Olympic Games (1896 - 2016)
+            </h1>
+        </div>
+        
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+        <style> rect {fill: lightblue; stroke: black; }</style>
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <script src="js/CountryOverall.js"></script>
+        <script src="js/YearCountry.js"></script>
+        <script src="js/CountryOverYears.js"></script>
+        <script src="js/TopTen.js"></script>
+
+        <!--   BG logo code      -->
+
+        <div class="text-things">
+            <h4 style="text-align:center;color:rgb(0, 0, 139);font-family:Arial;font-size:100%">
+                Explore the medal-winning countries and the evolving participation of nations throughout Olympic history. 
+                From ancient times in Olympia, Greece (776 BC - 393 AD), to the resurgence of the modern Olympics in Athens in 1896. 
+                The period from Athens 1896 to Rio 2016 is known as the "Modern Olympics." 
+                Note the two extended gaps between 1912-1920 and 1936-1948 due to World Wars.<br>
+                (<a href="https://towardsdatascience.com/120-years-of-olympic-games-how-to-analyze-and-visualize-the-history-with-r-3c2a5f3bf875">reference</a>)
+                <br><br>
+            </h4>
+        </div>
+        
+        <div id="olympics_winners">
+            <img id="olympics" name="Olympics" src="images/olympic.png" width="100%" height="100%" class="center">
+        </div>
+
+
+        <!--    BG logo code ENDS HERE -->
+        
+    </head>
+    <svg width=8000 height=6000></svg>
+    <body>
+
+        <style>
+            .tab button {
+                background-color: #8AAAE5; /* 00e1ff Default background color */
+                border: none;
+                color: black;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                font-family: Arial;
+                transition: box-shadow 0.3s ease-in-out; /* Add transition for smooth effect */
+            }
+        
+            .tab button:hover {
+                background-color: #EE4E34; /* EA738D ff0000 Background color on hover */
+                animation: glowing 1.5s infinite;
+            }
+        
+            @keyframes glowing {
+                0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.7); }
+                50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.7); }
+                100% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.7); }
+            }
+        </style>
+        
+        <div class="tab">
+            <button class="tablinks" onclick="DisplayPage(event, 'Overall')"><b>All-time total Medals Won by Country</b></button>
+            <button class="tablinks" onclick="DisplayPage(event, 'YearCountry')"><b>Medals Winners of the Event by Country</b></button>
+            <button class="tablinks" onclick="DisplayPage(event, 'CountryOverYears')"><b>Medals Won by Country Over Years</b></button>
+            <button class="tablinks" onclick="DisplayPage(event, 'TopTen')"><b>Top 10 Countries - Medals Won</b></button>
+        </div>
+        
+
+        <div id="Overall" class="tabcontent">
+            <p style="color:rgb(138, 48, 127);font-family:Arial;font-weight:bold">
+                Bar plot showing the cumulative number of medals won by each country across all Olympic events, 
+                displayed in descending order of total medals.
+            </p>
+            <hr>
+        </div>
+
+        <div id="YearCountry" class="tabcontent">
+            <p style="color:rgb(138, 48, 127);font-family:Arial;font-weight:bold">
+                Bar chart showing total medals won by each country in the selected Olympic 
+                event (Year Season), ordered by descending medal count. 
+            </p>
+            <hr>
+        </div>
+
+        <div id="CountryOverYears" class="tabcontent">
+            <p style="color:rgb(138, 48, 127);font-family:Arial;font-weight:bold">
+                The bar chart shows total number of medals won by the chosen country in each Olympic event, 
+                arranged chronologically from the 1896 Summer Olympics to the 2016 Summer Olympics.
+            </p>
+            <hr>
+        </div>
+
+        <div id="TopTen" class="tabcontent">
+            <p style="color:rgb(138, 48, 127);font-family:Arial;font-weight:bold">
+                Bar chart displaying Top 10 countries by Olympic medals won from 1896 to 2016, in descending order.
+            </p>
+            <hr>
+        </div>
+
+        <script>
+            function DisplayPage(evnt, pageName) {
+                var i, tabcontent, tablinks;
+                d3.select("svg").remove();
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                    //tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+
+                document.getElementById(pageName).style.display = "block";
+
+                if(pageName === 'Overall') {
+                    Overall.display();
+                }
+                    
+                if(pageName === 'YearCountry') {
+                    YearCountry.display();
+                }
+
+                if(pageName === 'CountryOverYears') {
+                    CountryOverYears.display();
+                }
+
+                if(pageName === 'TopTen') {
+                    TopTen.display();
+                }
+            }
+            DisplayPage(0, 'Overall');
+
+        </script>
+    </body>
+</html>
